@@ -1,0 +1,203 @@
+{
+  "_version": "1.76.0",
+  "sap.app": {
+    "id": "webapp",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.18.7",
+      "toolsId": "6d767ba8-c512-4afc-9ee5-083667b153e6"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/V2/Northwind/Northwind.svc/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.140.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "webapp.i18n.i18n",
+          "supportedLocales": ["en", ""],
+          "fallbackLocale": ""
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "webapp.view",
+        "async": true,
+        "viewPath": "webapp.view",
+        "bypassed": {
+          "target": "notFound"
+        }
+      },
+      "routes": [
+        {
+          "name": "appHome",
+          "pattern": ":?query:",
+          "target": ["TargetHome"]
+        },
+        {
+          "name": "showNotFound",
+          "pattern": "notfound",
+          "target": ["notFound"]
+        },
+        {
+          "pattern": "employees",
+          "name": "employeeList",
+          "target": "employees"
+        },
+        {
+          "pattern": "employees/overview:?query:",
+          "name": "employeeOverview",
+          "target": ["employeeOverviewTop", "employeeOverviewContent"]
+        },
+        {
+          "pattern": "employees/{employeeId}",
+          "name": "employee",
+          "target": "employee"
+        },
+        {
+          "pattern": "employees/{employeeId}/resume:?query:",
+          "name": "employeeResume",
+          "target": "employeeResume"
+			  }
+      ],
+      "targets": {
+        "TargetHome": {
+          "id": "home",
+          "name": "Home",
+          "level": 1
+        },
+        "notFound": {
+          "viewId": "notFound",
+          "viewName": "NotFound",
+          "transition": "show"
+        },
+        "employees": {
+          "id": "employeeList",
+          "path": "webapp.view.employee",
+          "name": "EmployeeList",
+          "level": 2
+        },
+        "employee": {
+          "id": "employee",
+          "name": "employee.Employee",
+          "level": 3
+        },
+        "employeeResume": {
+					"id": "resume",
+					"name": "employee.Resume",
+					"level" : 4,
+					"transition": "flip"
+				},
+        "resumeTabHobbies": {
+					"id": "resumeHobbies",
+					"parent": "employeeResume",
+					"path": "webapp.view.employee",
+					"name": "ResumeHobbies",
+					"controlId": "hobbiesTab",
+					"controlAggregation": "content"
+				},
+				"resumeTabNotes": {
+					"id": "resumeNotes",
+					"parent": "employeeResume",
+					"path": "webapp.view.employee",
+					"name": "ResumeNotes",
+					"controlId": "notesTab",
+					"controlAggregation": "content"
+				},
+        "employeeOverview": {
+					"id": "employeeOverview",
+					"path": "webapp.view.employee.overview",
+					"name": "EmployeeOverview",
+					"level" : 2
+				},
+				"employeeOverviewTop": {
+					"id": "employeeOverviewTop",
+					"parent": "employeeOverview",
+					"path": "webapp.view.employee.overview",
+					"name": "EmployeeOverviewTop",
+					"controlId": "EmployeeOverviewParent",
+					"controlAggregation": "content"
+				},
+				"employeeOverviewContent": {
+					"id": "employeeOverviewContent",
+					"parent": "employeeOverview",
+					"path": "webapp.view.employee.overview",
+					"name": "EmployeeOverviewContent",
+					"controlId": "EmployeeOverviewParent",
+					"controlAggregation": "content"
+				}
+      }
+    },
+    "rootView": {
+      "viewName": "webapp.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}
